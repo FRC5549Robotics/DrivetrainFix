@@ -69,6 +69,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     
   /** Creates a new DriveSubsystem. */
   public DrivetrainSubsystem() {
+    fixBackRight();
 
     // Zero out the gyro.
     m_ahrs.calibrate();
@@ -89,6 +90,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       m_rearLeft.getDriveDistanceMeters(),
       m_rearRight.getDriveDistanceMeters(),
     };
+
     timer = new Timer();
     timer.reset();
     timer.start();
@@ -302,6 +304,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     for (int i = 0; i <= 3; i++) {
       states[i++] = modules[i].getState();
+      
     }
 
     return states;
@@ -355,5 +358,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
       new SwerveModulePosition(m_frontRight.getDriveDistanceMeters(), m_frontRight.getState().angle),
       new SwerveModulePosition(m_rearLeft.getDriveDistanceMeters(), m_rearLeft.getState().angle),
       new SwerveModulePosition(m_rearRight.getDriveDistanceMeters(), m_rearRight.getState().angle)};
+  }
+  private void fixBackRight(){
+    m_rearRight.getTurnMotor().setInverted(false);
+    //m_rearRight.getTurnCANcoder().configSensorDirection(true);
   }
 }
