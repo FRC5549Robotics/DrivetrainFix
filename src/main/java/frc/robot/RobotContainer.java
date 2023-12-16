@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shintake;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 
 /**
@@ -45,12 +46,16 @@ public class RobotContainer {
   JoystickButton shootButton = new JoystickButton(m_controller2, Constants.SHOOT_BUTTON);
   JoystickButton indexOutButton = new JoystickButton(m_controller2, Constants.INDEX_OUT);
 
+  SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
   public RobotContainer() {
 
     m_drive.setDefaultCommand(new DriveCommand(m_drive, m_controller));
     // Configure the trigger bindings
     configureBindings();
+
+    //m_autoChooser.setDefaultOption("Only Drive Middle", m_ZeroConeAutoMiddle);
+
   }
 
   /**
@@ -83,6 +88,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return m_autoChooser.getSelected();
   }
 }
