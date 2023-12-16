@@ -15,6 +15,10 @@ import edu.wpi.first.wpilibj.SPI;
 import org.ejml.simple.SimpleBase;
 import org.ejml.simple.SimpleMatrix;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Shintake;
 
 
 /**
@@ -29,6 +33,17 @@ public class RobotContainer {
   private final XboxController m_controller = new XboxController(0);
   private final XboxController m_controller2 = new XboxController(1);
   private final DrivetrainSubsystem m_drive = new DrivetrainSubsystem();
+
+  public Indexer m_indexer = new Indexer(); 
+  public Shintake m_shintake = new Shintake(); 
+
+  JoystickButton indexInButton = new JoystickButton(m_controller2, Constants.INDEXER_BUTTON);
+  JoystickButton resetNavXButton = new JoystickButton(m_controller, 4);
+  Trigger shootTrigger = new JoystickButton(m_controller2, Constants.SHOOT_TRIGGER);
+  JoystickButton intakeButton = new JoystickButton(m_controller2, Constants.INTAKE_BUTTON);
+  JoystickButton pnuematics = new JoystickButton(m_controller2, Constants.PNEUMATIC_BUTTON);
+  JoystickButton shootButton = new JoystickButton(m_controller2, Constants.SHOOT_BUTTON);
+  JoystickButton indexOutButton = new JoystickButton(m_controller2, Constants.INDEX_OUT);
 
 
   public RobotContainer() {
@@ -48,7 +63,17 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
+    indexInButton.onTrue(new InstantCommand(m_indexer::indexer_run));
+    indexInButton.onFalse(new InstantCommand(m_indexer::indexer_stop));
+    resetNavXButton.onTrue(new InstantCommand(m_drive::zeroGyroscope));
+    intakeButton.onTrue(new InstantCommand(m_shintake::shintake_back));
+    intakeButton.onFalse(new InstantCommand(m_shintake::shintake_stop));
+    pnuematics.onFalse(new InstantCommand(m_shintake::retract));
+    pnuematics.onTrue(new InstantCommand(m_shintake::extend));
+    shootButton.onTrue(new InstantCommand(m_shintake::shintake_run));
+    shootButton.onFalse(new InstantCommand(m_shintake::shintake_stop));
+    indexOutButton.onTrue(new InstantCommand(m_indexer::indexer_back));
+    indexOutButton.onFalse(new InstantCommand(m_indexer::indexer_stop));
   }
 
   /**

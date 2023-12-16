@@ -101,9 +101,45 @@ public final class Constants {
     public static final double kDriveD = 0.0;
     public static final double kDriveFF = 2.96;
 
-    public static final double kTurningP = 0.01;
+    public static final double kTurningP = 0.02;
     public static final double kTurningI = 0.0;
     public static final double kTurningD = 0.005;
     
     // public static final SimpleMotorFeedforward driveFF = new SimpleMotorFeedforward(0.254, 0.137);
+    public static double INITIAL_HEADING;   
+    public static double POLE_DISTANCE = 39.75;
+
+    // Indexer
+    public static final int INDEXER_MOTOR = 20;
+    //TBD
+    public static final int INDEXER_SPEED = 1;
+    public static final int INDEXER_BUTTON = 2;
+
+    //Shintake
+    public static final int SHINTAKE_MOTOR = 21;
+    public static final double kP = 0.46416;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kS = 0.020963;
+    public static final double kV = 0.18825;
+    public static final double kA = 0.013596;
+    public static final double tP = 1/27;
+    public static final int SHOOT_TRIGGER = 2;
+    public static final int INTAKE_BUTTON = 3;
+    public static final int SHOOT_BUTTON = 4;
+    public static final int INDEX_OUT = 1;
+
+    //Shooter Solenoids
+    public static final int SHOOTER_SOLENOID_FORWARD = 6;
+    public static final int SHOOTER_SOLENOID_REVERSE = 7;
+    public static final int PNEUMATIC_BUTTON  = 8;
+
+    //ultrasonic ports
+    public static final int ULTRASONIC_PING = 1;
+    public static final int ULTRASONIC_ECHO = 0;
+
+    //LED 
+    public static final int LED_PORT = 1;
+    //TBD
+    public static final double SHINTAKE_SPEED = 0.75;
 }

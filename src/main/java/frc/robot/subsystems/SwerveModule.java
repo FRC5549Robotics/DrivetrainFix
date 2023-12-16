@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.io.Console;
+
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 
@@ -12,6 +14,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -46,14 +49,22 @@ public class SwerveModule extends SubsystemBase {
                         double turningCANCoderOffsetDegrees) {
 
         m_driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
+        m_driveMotor.restoreFactoryDefaults();
         m_turningMotor = new CANSparkMax(turningMotorChannel, MotorType.kBrushless);
+        m_turningMotor.restoreFactoryDefaults();
+        m_driveMotor.burnFlash();
+        m_turningMotor.burnFlash();
+        Timer.delay(0.5);
 
         m_driveEncoder = m_driveMotor.getEncoder();
-        m_turningEncoder = m_turningMotor.getEncoder();
-
+        Timer.delay(1);
+        System.out.println("initialized");
         m_turningCANCoder = new CANCoder(turningCANCoderChannel);
+        m_turningCANCoder.setPositionToAbsolute();
         m_turningCANCoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
         m_turningCANCoder.setPosition(0);        
+       
+        m_turningEncoder = m_turningMotor.getEncoder();
 //        m_CANCoderOffset = Rotation2d.fromDegrees(turningCANCoderOffsetDegrees);
 
         // m_driveMotor.setIdleMode(IdleMode.kBrake);

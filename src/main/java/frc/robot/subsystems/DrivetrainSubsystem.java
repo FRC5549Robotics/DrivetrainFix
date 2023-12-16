@@ -116,7 +116,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Front Right Neo Encoder", m_frontRight.getTurnEncoder().getPosition());
     SmartDashboard.putNumber("Back Left Neo Encoder", m_rearLeft.getTurnEncoder().getPosition());
     SmartDashboard.putNumber("Back Right Neo Encoder", m_rearRight.getTurnEncoder().getPosition());
-
     
     SmartDashboard.putNumber("Heading", getHeading().getDegrees());
     
@@ -125,6 +124,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("currentAngle", getPose().getRotation().getRadians());
     SmartDashboard.putNumber("targetPoseAngle", m_targetPose.getRotation().getRadians());
 
+    if(Math.abs(m_frontRight.getTurnEncoder().getPosition() - m_frontRight.getTurnCANcoderAngle()) > 2){
+      m_frontRight.getTurnEncoder().setPosition(m_frontRight.getTurnCANcoderAngle());
+    }
     // SmartDashboard.putNumber("Distance 0", modules[0].getDriveDistanceMeters());
     // SmartDashboard.putNumber("Distance 1", modules[1].getDriveDistanceMeters());
     // SmartDashboard.putNumber("Distance 2", modules[2].getDriveDistanceMeters());
@@ -310,13 +312,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return states;
   }
 
-  // /** Resets the drive encoders to currently read a position of 0. */
-  // public void resetEncoders() {
+  /** Resets the drive encoders to currently read a position of 0. */
+  public void resetEncoders() {
 
-  //   for (SwerveModule module: modules) {
-  //     module.resetEncoders();
-  //   }
-  // }
+    for (SwerveModule module: modules) {
+      module.resetEncoders();
+    }
+  }
 
   // /** Zeroes the heading of the robot. */
   // public void zeroHeading() {
@@ -349,8 +351,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     if (0.0 > raw_yaw ) { // yaw is negative
       calc_yaw += 360.0;
     }
-    return Rotation2d.fromDegrees(-calc_yaw);
+    return Rotation2d.fromDegrees(calc_yaw);
   }
+  
 
   private SwerveModulePosition[] getModulePositions(){
     return new SwerveModulePosition[]{
@@ -361,6 +364,5 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
   private void fixBackRight(){
     m_rearRight.getTurnMotor().setInverted(false);
-    //m_rearRight.getTurnCANcoder().configSensorDirection(true);
   }
 }
