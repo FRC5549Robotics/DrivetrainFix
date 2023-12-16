@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -35,6 +36,7 @@ public class ScoreBerry extends SequentialCommandGroup {
       new InstantCommand(() -> {
         m_indexer.indexer_back();
       }),
+      new WaitCommand(0.5),
       new ParallelCommandGroup(
         new InstantCommand(() -> {
         m_indexer.indexer_back();
@@ -43,10 +45,24 @@ public class ScoreBerry extends SequentialCommandGroup {
           m_shintake.shintake_run();
         })
       ),
+      new WaitCommand(2.5),
+      new ParallelCommandGroup(
       new InstantCommand(() -> {
         m_shintake.shintake_run();
       }),
-          m_drivetrainSubsystem.followTrajectoryCommand(path)
+      new InstantCommand(() -> {
+        m_indexer.indexer_run();
+      })),
+      new WaitCommand(0.5),
+      new ParallelCommandGroup(
+      new InstantCommand(() -> {
+        m_shintake.shintake_stop();
+      }),
+      new InstantCommand(() -> {
+        m_indexer.indexer_stop();
+      })),
+
+      m_drivetrainSubsystem.followTrajectoryCommand(path)
     );
   }
 }

@@ -57,6 +57,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private double offset = 0.0;
   private final Timer timer;
 
+  public ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+  private SwerveModuleState[] states = Constants.kDriveKinematics.toSwerveModuleStates(m_chassisSpeeds);
+
+
   // The gyro sensor
   private final AHRS m_ahrs = new AHRS();
 //  private final Gyro m_gyro =  new ADIS16470_IMU(); // new ADXRS450_Gyro();
@@ -366,12 +370,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
       new SwerveModulePosition(m_rearLeft.getDriveDistanceMeters(), m_rearLeft.getState().angle),
       new SwerveModulePosition(m_rearRight.getDriveDistanceMeters(), m_rearRight.getState().angle)};
   }
+
+  public ChassisSpeeds getChassisSpeeds(){
+    return m_chassisSpeeds;
+  }
   private void fixBackRight(){
     m_rearRight.getTurnMotor().setInverted(false);
   }
-
-  private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
-  private SwerveModuleState[] states = Constants.kDriveKinematics.toSwerveModuleStates(m_chassisSpeeds);
 
   public Command followTrajectoryCommand(PathPlannerTrajectory traj) {
     return new PPSwerveControllerCommand(

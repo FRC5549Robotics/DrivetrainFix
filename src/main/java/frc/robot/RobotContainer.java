@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathConstraints;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
@@ -63,12 +64,14 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    m_drive.setDefaultCommand(new DriveCommand(m_drive, m_controller));
+    m_drive.setDefaultCommand(new DriveCommand(m_drive, m_controller, m_drive.getChassisSpeeds()));
     // Configure the trigger bindings
     configureBindings();
 
-    //m_autoChooser.setDefaultOption("Only Drive Middle", m_ZeroConeAutoMiddle);
-
+    m_autoChooser.setDefaultOption("Go Forward", m_goForward);
+    m_autoChooser.addOption("Score Berry", m_scoreBerry);
+    m_autoChooser.addOption("Drop Bunny", m_dropBunny);
+    SmartDashboard.putData("Autonomous Command", m_autoChooser);
   }
 
   /**
@@ -101,6 +104,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_autoChooser.getSelected();
+    //return m_autoChooser.getSelected();
+    return m_goForward;
   }
 }

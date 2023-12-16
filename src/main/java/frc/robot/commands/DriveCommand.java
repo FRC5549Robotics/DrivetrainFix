@@ -20,9 +20,10 @@ public class DriveCommand extends CommandBase {
     // The subsystem the command runs on
     public final DrivetrainSubsystem drivetrain;
 
-    public DriveCommand(DrivetrainSubsystem subsystem, XboxController controller){
+    public DriveCommand(DrivetrainSubsystem subsystem, XboxController controller, ChassisSpeeds ChassisSpeeds){
         drivetrain = subsystem;
         m_controller = controller;
+        chassisSpeeds = ChassisSpeeds;
         addRequirements(drivetrain);
     }
  
@@ -32,9 +33,9 @@ public class DriveCommand extends CommandBase {
             
     @Override
     public void execute() {
-        xDot = -m_controller.getLeftY() * Constants.kMaxTranslationalVelocity;
-        yDot = -m_controller.getLeftX() * Constants.kMaxTranslationalVelocity;
-        thetaDot = -m_controller.getRightX() * Constants.kMaxRotationalVelocity;
+        xDot = m_controller.getLeftY() * Constants.kMaxTranslationalVelocity;
+        yDot = m_controller.getLeftX() * Constants.kMaxTranslationalVelocity;
+        thetaDot = m_controller.getRightX() * Constants.kMaxRotationalVelocity;
         fieldRelative = true;
         if(Math.abs(xDot)<0.1*Constants.kMaxTranslationalVelocity){
           xDot = 0;
