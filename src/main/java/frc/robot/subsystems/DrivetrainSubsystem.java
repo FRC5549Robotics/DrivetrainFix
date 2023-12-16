@@ -10,6 +10,10 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import edu.wpi.first.wpilibj2.command.Command;
+
 
 @SuppressWarnings("PMD.ExcessiveImports")
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -366,19 +370,22 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_rearRight.getTurnMotor().setInverted(false);
   }
 
-//   public Command followTrajectoryCommand(PathPlannerTrajectory traj) {
-//     return new PPSwerveControllerCommand(
-//         traj, 
-//         this::getPose, // Pose supplier
-//         this.m_kinematics, // SwerveDriveKinematics
-//         new PIDController(1, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-//         new PIDController(3.5, 0, 0), // Y controller (usually the same values as X controller)
-//         new PIDController(1.7, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-//         (SwerveModuleState[] states) -> {
-//                this.m_chassisSpeeds = this.m_kinematics.toChassisSpeeds(states);
-//        }, // Module states consumer
-//         true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-//         this // Requires this drive subsystem
-//     );
-// ` }
+  private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+  private SwerveModuleState[] states = Constants.kDriveKinematics.toSwerveModuleStates(m_chassisSpeeds);
+
+  public Command followTrajectoryCommand(PathPlannerTrajectory traj) {
+    return new PPSwerveControllerCommand(
+        traj, 
+        this::getPose, // Pose supplier
+        Constants.kDriveKinematics, // SwerveDriveKinematics
+        new PIDController(1, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+        new PIDController(3.5, 0, 0), // Y controller (usually the same values as X controller)
+        new PIDController(1.7, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+        (SwerveModuleState[] states) -> {
+               this.m_chassisSpeeds = Constants.kDriveKinematics.toChassisSpeeds(states);
+       }, // Module states consumer
+        true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+        this // Requires this drive subsystem
+    );
+  }
 }

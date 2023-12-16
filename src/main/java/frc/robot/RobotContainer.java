@@ -6,6 +6,8 @@ package frc.robot;
 
 import frc.robot.Constants;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.DropBunny;
+import frc.robot.commands.ScoreBerry;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -20,6 +22,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shintake;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathConstraints;
 
 
 /**
@@ -47,6 +52,14 @@ public class RobotContainer {
   JoystickButton indexOutButton = new JoystickButton(m_controller2, Constants.INDEX_OUT);
 
   SendableChooser<Command> m_autoChooser = new SendableChooser<>();
+
+  public static PathPlannerTrajectory DropBunny = PathPlanner.loadPath("DropBunny", new PathConstraints(4, 3));
+  public static PathPlannerTrajectory ScoreBerry = PathPlanner.loadPath("ScoreBerry", new PathConstraints(4, 3));
+  public static PathPlannerTrajectory GoForward = PathPlanner.loadPath("GoForward", new PathConstraints(4, 3));
+
+  Command m_dropBunny = new DropBunny(m_drive, DropBunny);
+  Command m_goForward = new DropBunny(m_drive, GoForward);
+  Command m_scoreBerry = new ScoreBerry(m_drive, m_indexer, m_shintake, ScoreBerry);
 
   public RobotContainer() {
 

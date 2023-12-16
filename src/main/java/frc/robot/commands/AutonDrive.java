@@ -8,7 +8,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import java.lang.Math;
 
-public class DriveCommand extends CommandBase {
+public class AutonDrive extends CommandBase {
 
     private double xDot;
     private double yDot;
@@ -20,7 +20,7 @@ public class DriveCommand extends CommandBase {
     // The subsystem the command runs on
     public final DrivetrainSubsystem drivetrain;
 
-    public DriveCommand(DrivetrainSubsystem subsystem, XboxController controller){
+    public AutonDrive(DrivetrainSubsystem subsystem, XboxController controller){
         drivetrain = subsystem;
         m_controller = controller;
         addRequirements(drivetrain);
